@@ -27,6 +27,7 @@
 		CA283B282122BFA400D6ACD2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA283B272122BFA400D6ACD2 /* Model.swift */; };
 		CA8139A02127D403004FADF5 /* MovieNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA81399F2127D403004FADF5 /* MovieNetworkManager.swift */; };
 		CA8CBA032128C784001E42FE /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8CBA022128C784001E42FE /* Suggestion.swift */; };
+		CAFADBDF212A7698008BE431 /* SearchViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFADBDE212A7698008BE431 /* SearchViewControllerExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		CA283B272122BFA400D6ACD2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		CA81399F2127D403004FADF5 /* MovieNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieNetworkManager.swift; sourceTree = "<group>"; };
 		CA8CBA022128C784001E42FE /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
+		CAFADBDE212A7698008BE431 /* SearchViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				CA283B252122BA3B00D6ACD2 /* SearchViewController.swift */,
+				CAFADBDE212A7698008BE431 /* SearchViewControllerExtensions.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAFADBDF212A7698008BE431 /* SearchViewControllerExtensions.swift in Sources */,
 				CA283B282122BFA400D6ACD2 /* Model.swift in Sources */,
 				CA283B262122BA3B00D6ACD2 /* SearchViewController.swift in Sources */,
 				CA283AF121217EB800D6ACD2 /* MovieListTableViewController.swift in Sources */,

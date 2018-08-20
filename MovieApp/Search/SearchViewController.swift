@@ -10,14 +10,13 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class SearchViewController: UIViewController, UISearchBarDelegate {
+class SearchViewController: UIViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var suggestionListTableView: UITableView!
     
     let realm = try! Realm()
-    var suggestionList = List<String>()
     var suggestionArray = [String]()
     
     override func viewDidLoad() {
@@ -38,63 +37,17 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     func configureUI() {
         activityIndicator.hidesWhenStopped = true
         suggestionListTableView.isHidden = true
+        view.backgroundColor = UIColor.black
         suggestionListTableView.backgroundColor = UIColor.black
-        let footerView = UIView()
-        footerView.backgroundColor = UIColor.black
-        suggestionListTableView.tableFooterView = footerView
         let searchTextField = movieSearchBar.value(forKey: "searchField") as? UITextField
         searchTextField?.textColor = UIColor.white
     }
     
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        suggestionListTableView.isHidden = true
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        activityIndicator.stopAnimating()
-        if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
-            cancelButton.isEnabled = true
-        }
-        self.suggestionListTableView.isHidden = false
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        suggestionListTableView.isHidden = true
-        if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
-            cancelButton.isEnabled = false
-        }
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        activityIndicator.startAnimating()
-        movieSearchBar.endEditing(true)
-        
-        guard let searchString = movieSearchBar.text else {
-            return
-        }
-        
-        if searchString.trimmingCharacters(in: .whitespaces).isEmpty  {
-            showAlertWith(title: "Invalid Search", message: "Please enter a valid search string.")
-            activityIndicator.stopAnimating()
-            movieSearchBar.text = ""
-            return
-        }
-        
-        performSearch(searchString: searchString)
- 
-    }
-    
     func performSearch(searchString: String) {
         MovieNetworkManager.shared.fetchImageData { (imageData, error) in
-            guard let imageData = imageData else {
-                return
-            }
-            guard let baseURL = imageData.secureBaseURL else {
-                return
-            }
-            guard let posterSizes = imageData.posterSizes else {
+            guard let imageData = imageData,
+            let baseURL = imageData.secureBaseURL,
+            let posterSizes = imageData.posterSizes else {
                 return
             }
             
@@ -159,6 +112,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         self.navigationController?.pushViewController(movieListTableViewController, animated: true)
     }
     
+    @objc func keyboardWillShow(_ notification:Notification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            suggestionListTableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification) {
+        if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            suggestionListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        }
+    }
+}
+
+extension SearchViewController {
     func showAlertWith(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -167,39 +134,4 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         alertController.addAction(OKAction)
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    @objc func keyboardWillShow(_ notification:Notification) {
-        
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            suggestionListTableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0)
-        }
-    }
-    
-    @objc func keyboardWillHide(_ notification:Notification)
-    {
-        if let _ = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            suggestionListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        }
-    }
-}
-
-extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return suggestionArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionListTableViewCell")
-        cell?.textLabel?.textColor = UIColor.white
-        cell?.backgroundColor = UIColor.black
-        cell?.textLabel?.text = suggestionArray[indexPath.row]
-        return cell!
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSearch(searchString: suggestionArray[indexPath.row])
-        movieSearchBar.text = suggestionArray[indexPath.row]
-    }
-    
 }
