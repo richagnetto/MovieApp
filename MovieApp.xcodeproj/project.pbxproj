@@ -151,15 +151,6 @@
 			path = DataModel;
 			sourceTree = "<group>";
 		};
-		CA2486B8212A31F0002283C3 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				CA81399F2127D403004FADF5 /* MovieNetworkManager.swift */,
-			);
-			name = Services;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		CA283AE221217EB800D6ACD2 = {
 			isa = PBXGroup;
 			children = (
@@ -186,7 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				CA283AEE21217EB800D6ACD2 /* AppDelegate.swift */,
-				CA2486B8212A31F0002283C3 /* Services */,
+				CA81399F2127D403004FADF5 /* MovieNetworkManager.swift */,
 				CA2486B7212A31CA002283C3 /* DataModel */,
 				CA2486B6212A319F002283C3 /* MovieList */,
 				CA8139A12128AB31004FADF5 /* Search */,
